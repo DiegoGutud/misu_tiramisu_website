@@ -563,7 +563,7 @@ export const GaleriaSection = () => {
         <span className="label center" style={{ display: 'flex', justifyContent: 'center' }}>Galería</span>
         <h2 className="title centered">Cada cucharada,<br /><em>una obra de arte</em></h2>
       </div>
-      <div style={{ overflow: 'hidden' }}>
+      <div style={{ padding: '12px 0 20px' }}>
         <div className="galeria-strip" ref={stripRef}>
           {allItems.map((item, i) => (
             <div className="galeria-item" key={i}>

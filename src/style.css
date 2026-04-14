@@ -72,7 +72,8 @@ body {
 
 section {
   scroll-margin-top: 80px;
-  overflow: hidden;
+  /* No overflow:hidden here — it clips card shadows and hover lifts in carousels.
+     Individual sections that need clipping set it themselves. */
 }
 
 ::-webkit-scrollbar {
@@ -332,6 +333,12 @@ h2.title.centered {
   color: #fff;
   padding: 2rem;
   max-width: 900px;
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    margin-top: -12vh;
+  }
 }
 
 .hero-eyebrow {
@@ -657,13 +664,21 @@ h2.title.centered {
 }
 
 .swiper-sabores {
-  padding: 1rem 5rem 5rem !important;
-  overflow: hidden;
+  padding: 2rem 5rem 5rem !important;
+  overflow: visible;
+  /* clip only the horizontal axis so shadow/hover are not cut */
+  clip-path: none;
+}
+
+/* Override Swiper's internal overflow so card shadows and hover transforms are visible */
+.swiper-sabores.swiper {
+  overflow: visible !important;
 }
 
 .swiper-wrapper {
   display: flex;
   padding-bottom: 2rem;
+  padding-top: 0.5rem;
 }
 
 .sabor-card {
@@ -873,7 +888,8 @@ h2.title.centered {
 #galeria {
   padding: 9rem 0 3rem;
   background: var(--cream);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .galeria-head {
@@ -926,7 +942,8 @@ h2.title.centered {
 #resenas {
   padding: 9rem 0;
   background: var(--pink-light);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .resenas-head {
@@ -983,7 +1000,10 @@ h2.title.centered {
 }
 
 .marquee-outer {
-  overflow: hidden;
+  /* No overflow set here — #resenas handles horizontal clipping at section level.
+     This avoids the visible rectangular clip edge caused by overflow:hidden on the row. */
+  padding-top: 10px;
+  padding-bottom: 16px;
 }
 
 .marquee-track {
