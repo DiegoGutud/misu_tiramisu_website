@@ -199,7 +199,8 @@ export const Hero = () => {
     const ctx = gsap.context(() => {
       // Hero entrance
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      tl.fromTo('#heroPass', { opacity: 0 }, { opacity: 1, duration: 1.4 })
+      tl.fromTo('#heroBgVideo', { opacity: 0 }, { opacity: 1, duration: 2 })
+        .fromTo('.hero-overlay', { opacity: 0 }, { opacity: 1, duration: 1.4 }, 0)
         .fromTo('#heroEye', { opacity: 0, y: 18, letterSpacing: '0.1em' }, { opacity: 1, y: 0, letterSpacing: '0.3em', duration: 0.9 }, 0.2)
         .fromTo('#heroTitle', { opacity: 0, scale: 0.9, filter: 'blur(10px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.2 }, 0.4)
         .fromTo('#heroTag', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.9 }, 0.6)
@@ -237,7 +238,7 @@ export const Hero = () => {
 
   return (
     <section id="hero">
-      <video className="hero-video" autoPlay muted loop playsInline poster="/images/misu_product_3.jpg">
+      <video className="hero-video" autoPlay muted loop playsInline id="heroBgVideo">
         <source src="/images/misu_product_6.mp4" type="video/mp4" />
       </video>
       <div className="hero-overlay" />
