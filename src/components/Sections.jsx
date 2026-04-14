@@ -9,6 +9,49 @@ import 'swiper/css/pagination';
 gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
+// ─── LazyVideo ────────────────────────────────────────────────────────────────
+// Defers src assignment and autoplay until the video enters the viewport.
+// This prevents the browser from downloading heavy MP4 files on initial load.
+const LazyVideo = ({ src, className, style, poster, ...props }) => {
+  const videoRef = useRef(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !loaded) {
+          video.src = src;
+          video.load();
+          video.play().catch(() => {});
+          setLoaded(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, [src, loaded]);
+
+  return (
+    <video
+      ref={videoRef}
+      className={className}
+      style={style}
+      poster={poster}
+      muted
+      loop
+      playsInline
+      preload="none"
+      {...props}
+    />
+  );
+};
+
 
 
 
@@ -303,10 +346,7 @@ export const EsenciaSection = () => {
 
           <div className="esencia-visual" ref={visualRef}>
             <div className="esencia-frame">
-              <video autoPlay muted loop playsInline>
-                <source src="/images/misu_preparation_1.mp4" type="video/mp4" />
-                <img src="/images/misu_product_9.jpg" alt="Elaboración artesanal Misú" />
-              </video>
+              <LazyVideo src="/images/misu_preparation_1.mp4" poster="/images/misu_product_9.jpg" />
             </div>
             <div className="esencia-tag">
               <div className="esencia-tag-inner">
@@ -443,9 +483,7 @@ export const ProcesoSection = () => {
       <div className="container">
         <div className="proceso-grid">
           <div className="proceso-vid-wrap" ref={vidRef}>
-            <video autoPlay muted loop playsInline>
-              <source src="/images/misu_product_24.mp4" type="video/mp4" />
-            </video>
+            <LazyVideo src="/images/misu_product_24.mp4" />
             <div className="proceso-vid-overlay" />
           </div>
 
@@ -530,7 +568,7 @@ export const GaleriaSection = () => {
           {allItems.map((item, i) => (
             <div className="galeria-item" key={i}>
               {item.video ? (
-                <video autoPlay muted loop playsInline src={item.video} />
+                <LazyVideo src={item.video} />
               ) : (
                 <img src={item.img} alt={item.alt} loading="lazy" />
               )}
@@ -766,14 +804,14 @@ export const PideSection = () => {
 
         <div className="delivery-row">
           <a href="https://glovoapp.com/en/es/madrid/stores/misu-lautentico-tiramisu-madrid" target="_blank" rel="noreferrer" className="del-btn">
-            <img src="/images/misu_uber_glovo.png" className="del-img" alt="Glovo" />
+            <img src="/images/misu_uber_glovo.png" className="del-img" alt="Glovo" loading="lazy" />
             <div>
               <div className="del-label-top">Pide en</div>
               <div className="del-label-main">Glovo</div>
             </div>
           </a>
           <a href="https://www.ubereats.com/es/store/misu-lautentico-tiramisu/p39BwT-1UiOLMnsBHYHrDg" target="_blank" rel="noreferrer" className="del-btn">
-            <img src="/images/misu_uber_eats.png" className="del-img" alt="Uber Eats" />
+            <img src="/images/misu_uber_eats.png" className="del-img" alt="Uber Eats" loading="lazy" />
             <div>
               <div className="del-label-top">Pide en</div>
               <div className="del-label-main">Uber Eats</div>
@@ -789,13 +827,13 @@ export const PideSection = () => {
 
         <div className="social-row">
           <a href="https://www.instagram.com/misu_tiramissu" target="_blank" rel="noreferrer" className="soc-btn" title="Instagram">
-            <img src="/images/misu_instagram.png" className="del-img" alt="Instagram" />
+            <img src="/images/misu_instagram.png" className="del-img" alt="Instagram" loading="lazy" />
           </a>
           <a href="https://www.tiktok.com/@misu_tiramissu" target="_blank" rel="noreferrer" className="soc-btn" title="TikTok">
-            <img src="/images/misu_tiktok.png" className="del-img" alt="TikTok" />
+            <img src="/images/misu_tiktok.png" className="del-img" alt="TikTok" loading="lazy" />
           </a>
           <a href="https://api.whatsapp.com/send/?phone=34660261301&text&type=phone_number&app_absent=0" target="_blank" rel="noreferrer" className="soc-btn" title="WhatsApp">
-            <img src="/images/misu_whatsapp.png" className="del-img" alt="WhatsApp" />
+            <img src="/images/misu_whatsapp.png" className="del-img" alt="WhatsApp" loading="lazy" />
           </a>
         </div>
       </div>
