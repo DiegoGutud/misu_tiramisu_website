@@ -24,6 +24,7 @@ build/
 gemini_skills/
 implementation_report.md
 misu_tiramisu_website_v1/
+design-system/
 
 # Logs
 npm-debug.log*
